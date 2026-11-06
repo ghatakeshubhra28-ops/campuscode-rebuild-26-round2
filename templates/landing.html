@@ -1,0 +1,96 @@
+﻿{% extends "base.html" %}
+{% block title %}CampusCode | Build. Compete. Ship.{% endblock %}
+{% block css %}<link rel="stylesheet" href="/css/landing.css">{% endblock %}
+
+{% block content %}
+<header class="spot hero">
+  <nav class="nav">
+    <a href="/" class="brand"><img src="/img/campuscode-logo.png" alt="CampusCode"> CAMPUSCODE</a>
+    <div class="nav-links">
+      <a class="sweep" href="#how">How it works</a>
+      <a class="sweep" href="#numbers">Community</a>
+    </div>
+    <div class="nav-cta">
+      <a class="sweep" href="/login">Log in</a>
+      <a class="btn" href="/register">Get your ID</a>
+    </div>
+  </nav>
+
+  <div class="hero-grid">
+    <div class="reveal">
+      <p class="label"><span class="live-dot"></span> The digital home for student innovation</p>
+      <h1>Ship something <span class="mark">real.</span></h1>
+      <p class="sub">Run and join hackathons, find teammates, submit projects and earn verifiable certificates. One ID, one place.</p>
+      <div class="hero-cta">
+        <a class="btn" href="/register">Get your ID &rarr;</a>
+        <a class="btn ghost" href="/login">I already have one</a>
+      </div>
+    </div>
+
+    <div class="stage">
+      <div class="idcard">
+        <div class="idcard-top">
+          <img src="/img/campuscode-logo.png" alt="CampusCode">
+          <span class="label">Student pass</span>
+        </div>
+        <div class="idcard-body">
+          <div class="idcard-name">Your name here</div>
+          <div class="idcard-id">CC-2026-0001</div>
+          <span class="idcard-chip">ARENA ACCESS</span>
+        </div>
+        <div class="idcard-bar">
+          <div class="bars"></div>
+          <span class="label">Build / Compete / Ship</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="ticker">
+  <div class="ticker-track">
+    <span>HACKATHONS</span><b>/</b><span>QUIZZES</span><b>/</b><span>TEAMMATES</span><b>/</b><span>PROJECTS</span><b>/</b><span>INTERNSHIPS</span><b>/</b><span>CERTIFICATES</span><b>/</b>
+    <span>HACKATHONS</span><b>/</b><span>QUIZZES</span><b>/</b><span>TEAMMATES</span><b>/</b><span>PROJECTS</span><b>/</b><span>INTERNSHIPS</span><b>/</b><span>CERTIFICATES</span><b>/</b>
+  </div>
+</div>
+
+<section class="section" id="how">
+  <p class="label">How it works</p>
+  <h2>Three moves. One <span class="mark">pass.</span></h2>
+  <div class="steps">
+    <div class="card hoverable step on-scroll">
+      <span class="num">01</span>
+      <h3>Build</h3>
+      <p>Create your ID, join an event and start your project with a team or on your own.</p>
+    </div>
+    <div class="card hoverable step on-scroll" style="transition-delay:.12s">
+      <span class="num">02</span>
+      <h3>Compete</h3>
+      <p>Move through rounds, get scored by judges and watch your journey update live.</p>
+    </div>
+    <div class="card hoverable step on-scroll" style="transition-delay:.24s">
+      <span class="num">03</span>
+      <h3>Ship</h3>
+      <p>Submit your work, earn a certificate you can verify and unlock internships.</p>
+    </div>
+  </div>
+</section>
+
+<section class="ink stats on-scroll" id="numbers">
+  <div class="stat"><strong data-count="48">0</strong><span class="label">Events hosted</span></div>
+  <div class="stat"><strong data-count="1200">0</strong><span class="label">Students on board</span></div>
+  <div class="stat"><strong data-count="36">0</strong><span class="label">Colleges</span></div>
+</section>
+
+<section class="cta on-scroll">
+  <h2>Your pass to the <span class="mark">arena.</span></h2>
+  <a class="btn" href="/register">Get your ID &rarr;</a>
+</section>
+
+<footer class="footer">
+  <span class="label">&copy; 2026 CampusCode &middot; Learn &middot; Build &middot; Compete &middot; Ship</span>
+  <span class="label">Chennai, India</span>
+</footer>
+{% endblock %}
+
+{% block js %}<script src="/js/tilt.js"></script>{% endblock %}

@@ -1,0 +1,156 @@
+/* arena.css - Round 2 design system: ink and lime */
+:root {
+  --bg: #ffffff;
+  --tint: #f7f7f4;
+  --line: #deded8;
+  --text: #111111;
+  --muted: #6b6b66;
+  --purple: #7665ff;
+  --lime: #a8e62e;
+  --radius: 12px;
+  --ease: cubic-bezier(.2, .7, .2, 1);
+}
+
+* { box-sizing: border-box; margin: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+h1, h2, h3 { font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+
+.label {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.card {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px;
+  transition: border-color .2s var(--ease), transform .2s var(--ease), box-shadow .2s var(--ease);
+}
+.card.hoverable { cursor: pointer; }
+.card.hoverable:hover {
+  border-color: var(--text);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(17, 17, 17, .06);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border: 1px solid var(--text);
+  border-radius: 8px;
+  background: var(--text);
+  color: #fff;
+  font: 500 14px 'Inter', sans-serif;
+  cursor: pointer;
+  transition: background .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease);
+}
+.btn:hover { background: var(--lime); border-color: var(--lime); color: var(--text); }
+.btn.ghost { background: #fff; color: var(--text); border-color: var(--line); }
+.btn.ghost:hover { border-color: var(--text); background: #fff; }
+
+.chip {
+  padding: 6px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: #fff;
+  font: 500 13px 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all .2s var(--ease);
+}
+.chip:hover { border-color: var(--text); }
+.chip.active { background: var(--text); color: #fff; border-color: var(--text); }
+
+.input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font: 400 14px 'Inter', sans-serif;
+  transition: border-color .2s var(--ease), box-shadow .2s var(--ease);
+}
+.input:focus { outline: none; border-color: var(--purple); box-shadow: 0 0 0 3px rgba(118, 101, 255, .15); }
+
+.live-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--lime);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .35; } }
+
+@keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+.reveal { animation: rise .5s var(--ease) both; }
+
+/* ---- Ink and lime kit ---- */
+.ink { background: var(--text); color: #fff; border-radius: var(--radius); }
+.ink .label { color: #a3a39c; }
+
+.mark {
+  padding: 0 .1em;
+  box-shadow: inset 0 -0.35em 0 var(--lime);
+  transition: box-shadow .3s var(--ease);
+}
+.mark:hover { box-shadow: inset 0 -1.2em 0 var(--lime); }
+
+.sweep { position: relative; }
+.sweep::after {
+  content: "";
+  position: absolute; left: 0; bottom: -2px;
+  width: 100%; height: 2px;
+  background: var(--text);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s var(--ease);
+}
+.sweep:hover::after { transform: scaleX(1); }
+
+.spot { position: relative; background: #fff; overflow: hidden; }
+.spot::before, .spot::after { content: ""; position: absolute; inset: 0; pointer-events: none; }
+.spot::before {
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: .5;
+}
+.spot::after {
+  background-image:
+    linear-gradient(var(--text) 1px, transparent 1px),
+    linear-gradient(90deg, var(--text) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: .25;
+  -webkit-mask-image: radial-gradient(180px circle at var(--mx, 50%) var(--my, 50%), #000, transparent);
+  mask-image: radial-gradient(180px circle at var(--mx, 50%) var(--my, 50%), #000, transparent);
+}
+.spot > * { position: relative; z-index: 1; }
+
+.cursor-glow {
+  position: fixed; left: 0; top: 0;
+  width: 360px; height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(168, 230, 46, .16), transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.on-scroll { opacity: 0; transform: translateY(24px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.on-scroll.in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
