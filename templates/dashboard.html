@@ -1,1 +1,80 @@
-﻿<h1>dashboard</h1>
+﻿{% extends "base.html" %}
+{% block title %}Dashboard | CampusCode{% endblock %}
+{% block css %}<link rel="stylesheet" href="/css/dashboard.css">{% endblock %}
+
+{% block content %}
+<main class="dash spot">
+  <header class="dash-top">
+    <a href="/" class="dash-brand"><img src="/img/campuscode-logo.png" alt="CampusCode"> CAMPUSCODE</a>
+    <div class="dash-actions">
+      <span class="user-pill"><span class="av" id="avatar">ST</span><span id="userName">Student</span></span>
+      <button class="btn ghost" id="logout">Log out</button>
+    </div>
+  </header>
+
+  <section class="dash-hero reveal">
+    <p class="label"><span class="live-dot"></span> Student workspace</p>
+    <h1>Welcome back, <span class="mark" id="firstName">Student</span>.</h1>
+    <p class="sub">Your ID, your journey and your events in one place.</p>
+  </section>
+
+  <section class="dash-grid reveal">
+    <div class="id-col">
+      <div class="flip" id="flip" role="button" tabindex="0" aria-label="Flip your ID card">
+        <div class="flip-inner">
+          <div class="face front">
+            <div class="idcard-top">
+              <img src="/img/campuscode-logo.png" alt="CampusCode">
+              <span class="label">Student pass</span>
+            </div>
+            <div class="idcard-body">
+              <div class="idcard-name" id="cardName">Student</div>
+              <div class="idcard-id" id="cardId">CC-2026-0000</div>
+              <div class="idcard-id" id="cardCollege">CampusCode student</div>
+              <span class="idcard-chip">ARENA ACCESS</span>
+            </div>
+            <div class="idcard-bar">
+              <div class="bars"></div>
+              <span class="label">Build / Compete / Ship</span>
+            </div>
+          </div>
+          <div class="face back">
+            <div class="qr" id="qr"></div>
+            <span class="label">Demo QR for <span id="qrId">CC-2026-0000</span></span>
+          </div>
+        </div>
+      </div>
+      <p class="label flip-hint">Click the card to flip it</p>
+    </div>
+
+    <div class="journey card">
+      <p class="label">Your journey</p>
+      <h2>ReBuild '26</h2>
+      <ol class="tl">
+        <li class="done"><span class="dot"></span><h3>ID issued</h3><p>Account created and email verified.</p></li>
+        <li class="done"><span class="dot"></span><h3>Joined ReBuild '26</h3><p>Individual hackathon, frontend only.</p></li>
+        <li class="done"><span class="dot"></span><h3>Round 1: Recreate</h3><p>Four pages recreated and submitted.</p></li>
+        <li class="active"><span class="dot"></span><h3>Round 2: Rebuild</h3><p>An original design in CampusCode's vibe. In progress.</p></li>
+        <li><span class="dot"></span><h3>Round 3: Interview</h3><p>Shortlisted participants only.</p></li>
+        <li><span class="dot"></span><h3>Certificates</h3><p>Participation certificates are issued.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="events">
+    <div class="events-head">
+      <div>
+        <p class="label">Discover / Hackathons</p>
+        <h2>Your events</h2>
+      </div>
+      <div class="tabs">
+        <button class="chip active" id="tabAll">Events</button>
+        <button class="chip" id="tabMine">My events (1)</button>
+      </div>
+    </div>
+    <div class="ev-grid" id="evGrid"></div>
+  </section>
+</main>
+{% endblock %}
+
+{% block js %}<script src="/js/dashboard.js"></script>{% endblock %}
