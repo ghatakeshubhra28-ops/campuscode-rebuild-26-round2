@@ -18,41 +18,6 @@
 .hero-cta { display: flex; gap: 12px; flex-wrap: wrap; }
 
 .stage { display: grid; place-items: center; perspective: 900px; padding: 30px 0; }
-.idcard {
-  width: 340px;
-  background: #fff;
-  border: 1.5px solid var(--text);
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 24px 60px rgba(17, 17, 17, .12);
-  transition: transform .15s ease-out;
-  animation: float 6s ease-in-out infinite;
-}
-.idcard.tilting { animation: none; }
-@keyframes float {
-  0%, 100% { transform: translateY(0) rotateX(0) rotateY(0); }
-  50% { transform: translateY(-10px) rotateX(2deg) rotateY(-3deg); }
-}
-.idcard-top { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px 0; }
-.idcard-top img { height: 34px; }
-.idcard-body { padding: 36px 20px 24px; }
-.idcard-name { font-size: 26px; font-weight: 800; letter-spacing: -.02em; }
-.idcard-id { font: 400 12px 'DM Mono', monospace; color: var(--muted); margin-top: 4px; }
-.idcard-chip {
-  display: inline-block;
-  margin-top: 16px;
-  padding: 3px 10px;
-  background: var(--lime);
-  border-radius: 999px;
-  font: 500 11px 'DM Mono', monospace;
-  letter-spacing: .06em;
-}
-.idcard-bar { background: var(--text); padding: 14px 20px; display: flex; justify-content: space-between; align-items: center; }
-.idcard-bar .label { color: #a3a39c; }
-.bars {
-  height: 26px; width: 120px;
-  background: repeating-linear-gradient(90deg, #fff 0 2px, transparent 2px 4px, #fff 4px 5px, transparent 5px 9px);
-}
 
 .ticker { background: var(--text); color: #fff; overflow: hidden; white-space: nowrap; padding: 14px 0; font: 500 13px 'DM Mono', monospace; letter-spacing: .12em; }
 .ticker-track { display: inline-block; animation: scroll 30s linear infinite; }
