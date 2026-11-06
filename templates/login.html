@@ -1,1 +1,70 @@
-﻿<h1>login</h1>
+﻿{% extends "base.html" %}
+{% block title %}Log in | CampusCode{% endblock %}
+{% block css %}<link rel="stylesheet" href="/css/auth.css">{% endblock %}
+
+{% block content %}
+<main class="auth spot">
+  <a href="/" class="auth-brand"><img src="/img/campuscode-logo.png" alt="CampusCode"> CAMPUSCODE</a>
+
+  <section class="auth-left reveal">
+    <p class="label"><span class="live-dot"></span> CampusCode / Access</p>
+    <h1>Scan <span class="mark">in.</span></h1>
+    <p class="sub">Slide your ID into the reader to enter the arena.</p>
+
+    <div class="auth-stage">
+      <div class="reader-wrap">
+        <div class="idcard" id="loginCard">
+          <div class="idcard-top">
+            <img src="/img/campuscode-logo.png" alt="CampusCode">
+            <span class="label">Student pass</span>
+          </div>
+          <div class="idcard-body">
+            <div class="idcard-name" id="cardName">Your name here</div>
+            <div class="idcard-id" id="cardId">CC-2026-0000</div>
+            <div class="idcard-id" id="cardCollege">CampusCode student</div>
+            <span class="idcard-chip pending" id="cardChip">READY TO SCAN</span>
+          </div>
+          <div class="idcard-bar">
+            <div class="bars"></div>
+            <span class="label">Build / Compete / Ship</span>
+          </div>
+        </div>
+
+        <div class="reader">
+          <span class="slot"></span>
+          <span class="led" id="led"></span>
+          <span class="label" id="readerText">Insert your ID</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel reveal" id="panel">
+    <p class="label">Existing account</p>
+    <h2>Welcome back</h2>
+    <p class="hint" id="hint">Demo: any valid email and a password of 6+ characters.</p>
+
+    <form id="loginForm" novalidate>
+      <div class="field">
+        <label for="email">Email address</label>
+        <input class="input" id="email" type="email" placeholder="you@college.edu" autocomplete="off">
+        <p class="err" id="err-email"></p>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="pw">
+          <input class="input" id="password" type="password" placeholder="Enter your password">
+          <button type="button" id="togglePw">Show</button>
+        </div>
+        <p class="err" id="err-password"></p>
+      </div>
+      <p class="forgot"><a class="sweep" href="#" id="forgot">Forgot password?</a></p>
+      <button class="btn full" id="loginBtn" type="submit">Log in &rarr;</button>
+    </form>
+
+    <p class="auth-foot">New here? <a class="sweep" href="/register">Get your ID</a></p>
+  </section>
+</main>
+{% endblock %}
+
+{% block js %}<script src="/js/login.js"></script>{% endblock %}
