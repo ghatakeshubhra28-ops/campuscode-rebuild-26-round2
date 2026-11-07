@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect
 
 app = Flask(__name__, static_folder="public", static_url_path="")
 
@@ -20,11 +20,11 @@ def dashboard():
 
 @app.route("/student/events")
 def events():
-    return render_template("events.html")
+    return redirect("/student#events")
 
 @app.route("/student/my-events")
 def my_events():
-    return render_template("my_events.html")
+    return redirect("/student#my-events")
 
 if __name__ == "__main__":
     app.run(debug=True)

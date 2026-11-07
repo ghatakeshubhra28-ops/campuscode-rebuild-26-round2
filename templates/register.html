@@ -1,1 +1,111 @@
-﻿<h1>register</h1>
+﻿{% extends "base.html" %}
+{% block title %}Get your ID | CampusCode{% endblock %}
+{% block css %}<link rel="stylesheet" href="/css/auth.css">{% endblock %}
+
+{% block content %}
+<main class="auth spot">
+  <a href="/" class="auth-brand"><img src="/img/campuscode-logo.png" alt="CampusCode"> CAMPUSCODE</a>
+
+  <section class="auth-left reveal">
+    <p class="label"><span class="live-dot"></span> CampusCode / Registration</p>
+    <h1>Get your <span class="mark">ID.</span></h1>
+    <p class="sub">Your pass to every hackathon, quiz and internship. Watch it fill in as you type.</p>
+
+    <div class="auth-stage">
+      <div class="idcard" id="card">
+        <div class="idcard-top">
+          <img src="/img/campuscode-logo.png" alt="CampusCode">
+          <span class="label">Student pass</span>
+        </div>
+        <div class="idcard-body">
+          <div class="idcard-name" id="cardName">Your name here</div>
+          <div class="idcard-id" id="cardId">CC-2026-0000</div>
+          <div class="idcard-id" id="cardCollege">Your college</div>
+          <span class="idcard-chip pending" id="cardChip">PENDING</span>
+        </div>
+        <div class="idcard-bar">
+          <div class="bars"></div>
+          <span class="label">Build / Compete / Ship</span>
+        </div>
+        <div class="stamp">VERIFIED</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel reveal">
+    <div class="progress">
+      <span class="seg on" data-seg="1"></span>
+      <span class="seg" data-seg="2"></span>
+      <span class="seg" data-seg="3"></span>
+    </div>
+
+    <div class="pane active" data-step="1">
+      <p class="label">Step 1 of 3</p>
+      <h2>Your details</h2>
+      <p class="hint">Tell us who you are.</p>
+      <div class="field">
+        <label for="name">Full name</label>
+        <input class="input" id="name" placeholder="Aarav Sharma" autocomplete="off">
+        <p class="err" id="err-name"></p>
+      </div>
+      <div class="field">
+        <label for="email">Email address</label>
+        <input class="input" id="email" type="email" placeholder="you@college.edu">
+        <p class="err" id="err-email"></p>
+      </div>
+      <div class="row"><span></span><button class="btn" id="next1">Continue &rarr;</button></div>
+    </div>
+
+    <div class="pane" data-step="2">
+      <p class="label">Step 2 of 3</p>
+      <h2>Your account</h2>
+      <p class="hint">Role: student.</p>
+      <div class="field">
+        <label for="college">College</label>
+        <input class="input" id="college" placeholder="VIT Pune" autocomplete="off">
+        <p class="err" id="err-college"></p>
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <div class="pw">
+          <input class="input" id="password" type="password" placeholder="At least 8 characters">
+          <button type="button" id="togglePw">Show</button>
+        </div>
+        <p class="err" id="err-password"></p>
+      </div>
+      <label class="check"><input type="checkbox" id="age"> I confirm that I am 18 years or older.</label>
+      <p class="err" id="err-age"></p>
+      <div class="row">
+        <button class="btn ghost" id="back2">&larr; Back</button>
+        <button class="btn" id="next2">Send code &rarr;</button>
+      </div>
+    </div>
+
+    <div class="pane" data-step="3">
+      <p class="label">Step 3 of 3</p>
+      <h2>Verify your email</h2>
+      <p class="hint">We sent a 6-digit code (demo: any 6 digits work).</p>
+      <div class="otp">
+        <input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric">
+        <input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric"><input maxlength="1" inputmode="numeric">
+      </div>
+      <p class="err" id="err-otp"></p>
+      <div class="row">
+        <button class="btn ghost" id="back3">&larr; Back</button>
+        <button class="btn" id="verify">Verify and issue ID</button>
+      </div>
+    </div>
+
+    <div class="pane" data-step="4">
+      <p class="label">All set</p>
+      <h2>Your ID is issued</h2>
+      <p class="hint" id="doneText">Welcome to the arena.</p>
+      <a class="btn" href="/login">Go to login &rarr;</a>
+    </div>
+
+    <p class="auth-foot">Already have an ID? <a class="sweep" href="/login">Log in</a></p>
+  </section>
+</main>
+{% endblock %}
+
+{% block js %}<script src="/js/register.js"></script>{% endblock %}
