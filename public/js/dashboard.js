@@ -72,7 +72,7 @@
   ];
 
   const NOTES = [
-    { id: 'n1', title: 'Round 2: Rebuild', text: 'Rebuild the 4 pages with an original design. Submit by Sat 7 Nov, 8:00 PM IST.', when: '7 Nov' },
+    { id: 'n1', title: 'Round 2: Rebuild', text: 'Rebuild the 4 pages with an original design. The deadline was extended: submit by Sun 8 Nov, 11:00 AM IST.', when: '7 Nov' },
     { id: 'n2', title: 'Your ID was issued', text: 'Your Student pass is ready in Digital Card.', when: '4 Nov' },
     { id: 'n3', title: "You joined ReBuild '26", text: 'Use the same team name on every submission.', when: '5 Nov' },
     { id: 'n4', title: 'HackMate has suggestions', text: 'Six sample students match your interests.', when: '5 Nov' },
@@ -84,7 +84,8 @@
     { when: '5 Nov, 10 AM', tag: 'Rules', title: 'Rules and round details shared', text: 'Registrations close at 6 PM. Read the schedule, rules and brand guidelines.' },
     { when: '6 Nov, 8 AM', tag: 'Round 1', title: 'Round 1 opens: Recreate', text: 'Recreate the 4 pages and submit your demo by 10 PM.' },
     { when: '6 Nov, 10 PM+', tag: 'Results', title: 'Round 2 shortlist', text: 'Posted in the WhatsApp group and channel after Round 1 ends.' },
-    { when: '7 Nov, 10 AM', tag: 'Round 2', title: 'Round 2 opens: Rebuild', text: 'Top performers only. A complete new UI. Submit by 8 PM.' },
+    { when: '7 Nov, 10 AM', tag: 'Round 2', title: 'Round 2 opens: Rebuild', text: 'Top performers only. A complete new UI.' },
+    { when: '7 Nov', tag: 'Update', title: 'Round 2 deadline extended', text: 'Round 2 submissions now close on Sunday 8 Nov at 11:00 AM IST.' },
     { when: '8 Nov', tag: 'Holiday', title: 'Diwali: no round', text: 'No round on Sunday. Enjoy Diwali with family.' },
     { when: '9 Nov', tag: 'Round 3', title: 'Interview shortlist', text: 'The shortlist for interviews is given.' },
     { when: '10 Nov', tag: 'Results', title: 'Certificates and interviews', text: 'Participation certificates are issued and Round 3 interviews begin.' },
@@ -108,7 +109,7 @@
   ];
 
   const RULES = [
-    { k: /deadline|due|late|when|time|8 ?pm|10 ?pm/, a: 'Round 1 closes Friday 6 Nov at 10:00 PM IST. Round 2 closes Saturday 7 Nov at 8:00 PM IST. Late submissions are not accepted, and what is live at the deadline is what gets judged.' },
+    { k: /deadline|due|late|when|time|8 ?pm|10 ?pm/, a: 'Round 1 closes Friday 6 Nov at 10:00 PM IST. Round 2 was extended and now closes Sunday 8 Nov at 11:00 AM IST. Late submissions are not accepted, and what is live at the deadline is what gets judged.' },
     { k: /\bai\b|40|percent|chatgpt|copilot|generated/, a: 'AI tools may be used, but only in a limited way. If more than 40% of the code is AI-written, the submission will not be considered, and you must be able to explain your own code.' },
     { k: /font|colou?r|brand|logo|purple|lime|hex/, a: 'Fonts: Inter for headings and DM Mono for small labels. Colours: purple #7665ff, lime #a8e62e (or #82b91a), black #111111 and background #f7f7f4. Use the logo exactly as given: never recolour, stretch or redraw it.' },
     { k: /team|individual|alone|solo/, a: 'ReBuild is an individual hackathon: you build alone and make one submission per round. You still need a team name for tracking, used the same way on Unstop, the portal and every submission.' },
@@ -118,13 +119,13 @@
     { k: /prize|internship|stipend|winner|cash/, a: 'The winner gets a Winner Certificate and a CampusCode internship with a Rs 15,000 stipend. The runner-up gets a certificate and every participant gets a participation certificate. There are no cash prizes.' },
     { k: /tailwind|bootstrap|template|library|libraries/, a: 'UI libraries such as Tailwind and Bootstrap are allowed. Do not copy a ready-made dashboard template as-is.' },
     { k: /host|vercel|netlify|deploy/, a: 'You can host for free: push your code to GitHub, then import the repo on vercel.com (or netlify.com) and deploy. Paste the live link as your demo link.' },
-    { k: /diwali|sunday|interview|round 3|certificate/, a: 'Sunday 8 Nov is Diwali with no round. The interview shortlist is given on 9 Nov, participation certificates are issued on 10 Nov, and interviews run on 10 and 11 Nov.' }
+    { k: /diwali|sunday|interview|round 3|certificate/, a: 'Sunday 8 Nov is Diwali with no new round, and Round 2 closes that morning at 11:00 AM IST. The interview shortlist is given on 9 Nov, participation certificates are issued on 10 Nov, and interviews run on 10 and 11 Nov.' }
   ];
   const ASK = ['When is the deadline?', 'What is the AI code limit?', 'Which fonts and colours?', 'What do I submit?', 'How is Round 2 judged?'];
   let chat = [{ from: 'bot', text: "Hi, I am RuleBot. I answer questions about the ReBuild '26 rules and schedule. This is a demo: it matches keywords, it is not a live AI model." }];
 
   // ---------- Deadlines (all times are IST, taken from the rulebook) ----------
-  const R2_DEADLINE = new Date('2026-11-07T20:00:00+05:30').getTime();
+  const R2_DEADLINE = new Date('2026-11-08T11:00:00+05:30').getTime();
   const r2Closed = () => Date.now() > R2_DEADLINE;
   const dayEnd = (iso) => new Date(iso + 'T23:59:59+05:30').getTime();
   let cdTimer = null;
@@ -132,7 +133,7 @@
   function countdownBox() {
     return '<div class="dx-cd" id="cd"><p class="label" id="cdLabel">Round 2 closes in</p>' +
       '<div class="dx-cd-cells"><div><b id="cdD">00</b><small>Days</small></div><div><b id="cdH">00</b><small>Hours</small></div><div><b id="cdM">00</b><small>Min</small></div><div><b id="cdS">00</b><small>Sec</small></div></div>' +
-      '<p class="dx-cd-closed">Submissions closed</p><p class="dx-note" id="cdNote">Sat 7 Nov, 8:00 PM IST</p></div>';
+      '<p class="dx-cd-closed">Submissions closed</p><p class="dx-note" id="cdNote">Sun 8 Nov, 11:00 AM IST (extended)</p></div>';
   }
   function tick() {
     const box = $('#cd');
@@ -141,7 +142,7 @@
     if (ms <= 0) {
       box.classList.add('closed'); box.classList.remove('urgent');
       $('#cdLabel').textContent = 'Round 2';
-      $('#cdNote').textContent = 'Closed Sat 7 Nov, 8:00 PM IST';
+      $('#cdNote').textContent = 'Closed Sun 8 Nov, 11:00 AM IST';
       clearInterval(cdTimer);
       return;
     }
@@ -216,7 +217,7 @@
       '<div class="dx-grid-2">' +
       '<section class="card"><p class="label">Your journey</p><h2 class="dx-card-title">ReBuild \'26</h2>' + journeyHtml() + '</section>' +
       '<div><section class="card"><p class="label">Upcoming deadlines</p><h2 class="dx-card-title">What is next</h2><ul class="dx-list">' +
-      deadlineRow('Round 2 submission', 'Sat 7 Nov, 8 PM', r2Closed()) +
+      deadlineRow('Round 2 submission', 'Sun 8 Nov, 11 AM', r2Closed()) +
       deadlineRow('Interview shortlist', 'Mon 9 Nov', Date.now() > dayEnd('2026-11-09')) +
       deadlineRow('Certificates issued', 'Tue 10 Nov', Date.now() > dayEnd('2026-11-10')) +
       deadlineRow('Interviews continue', 'Wed 11 Nov', Date.now() > dayEnd('2026-11-11')) + '</ul></section>' +
@@ -293,7 +294,7 @@
     let body = mine.map((ev) => {
       const isRebuild = ev.id === 'rebuild';
       const rounds = isRebuild
-        ? '<div class="dx-rounds"><div class="dx-round done"><b>Round 1: Recreate</b><small>Done</small></div><div class="dx-round ' + (r2Closed() ? 'done' : 'live') + '"><b>Round 2: Rebuild</b><small>' + (r2Closed() ? 'Closed' : 'Live until 8 PM') + '</small></div><div class="dx-round"><b>Round 3: Interview</b><small>Shortlist only</small></div></div>'
+        ? '<div class="dx-rounds"><div class="dx-round done"><b>Round 1: Recreate</b><small>Done</small></div><div class="dx-round ' + (r2Closed() ? 'done' : 'live') + '"><b>Round 2: Rebuild</b><small>' + (r2Closed() ? 'Closed' : 'Live until Sun 11 AM') + '</small></div><div class="dx-round"><b>Round 3: Interview</b><small>Shortlist only</small></div></div>'
         : '<p class="dx-note">Registered. The organisers will post the schedule here.</p>';
       return '<article class="card dx-me"><div class="dx-me-head"><span class="dx-ic">' + ev.init + '</span><div><p class="label">CampusCode presents</p><h3>' + esc(ev.name) + '</h3></div></div>' +
         '<div class="dx-me-meta"><span>Status: <b>Registered</b></span><span>Team: <b>' + (isRebuild ? esc(team) : 'Individual') + '</b></span><span>Dates: <b>' + ev.date + '</b></span></div>' + rounds +
