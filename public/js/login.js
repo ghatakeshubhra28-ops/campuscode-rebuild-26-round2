@@ -7,14 +7,25 @@ var card = document.getElementById('loginCard');
 var led = document.getElementById('led');
 var readerText = document.getElementById('readerText');
 var panel = document.getElementById('panel');
+var hint = document.getElementById('hint');
+var DEFAULT_HINT = hint ? hint.textContent : '';
 var busy = false;
 
-// If this person registered earlier in this browser, we know their details.
-var stored = null;
-try { stored = JSON.parse(localStorage.getItem('cc_student')); } catch (e) {}
+// IDs that were issued in this browser (saved by the Register page).
+var accounts = {};
+try { accounts = JSON.parse(localStorage.getItem('cc_accounts')) || {}; } catch (e) {}
+var lastStudent = null;
+try { lastStudent = JSON.parse(localStorage.getItem('cc_student')); } catch (e) {}
 
-function matchesStored(email) {
-  return stored && stored.email && stored.email.toLowerCase() === email.trim().toLowerCase();
+// Find the ID that belongs to this email, if there is one.
+function findAccount(email) {
+  var key = email.trim().toLowerCase();
+  if (accounts[key]) return accounts[key];
+  if (lastStudent && lastStudent.email && lastStudent.email.toLowerCase() === key) return lastStudent;
+  return null;
+}
+function haveAnyAccount() {
+  return Object.keys(accounts).length > 0 || !!(lastStudent && lastStudent.email);
 }
 
 // "aarav.sharma@vit.edu" becomes "Aarav Sharma".
@@ -40,17 +51,25 @@ function reject(field, errId, msg) {
   panel.classList.add('shake');
 }
 
-// The card shows a name as soon as you type your email.
+// The card shows the registered name as soon as the email matches.
 emailIn.addEventListener('input', function () {
   var value = emailIn.value.trim();
-  if (matchesStored(value)) {
-    document.getElementById('cardName').textContent = stored.name;
-    document.getElementById('cardId').textContent = stored.id;
-    document.getElementById('cardCollege').textContent = stored.college;
+  var acct = findAccount(value);
+  if (acct) {
+    document.getElementById('cardName').textContent = acct.name;
+    document.getElementById('cardId').textContent = acct.id;
+    document.getElementById('cardCollege').textContent = acct.college;
+    if (hint) hint.textContent = DEFAULT_HINT;
   } else {
     document.getElementById('cardName').textContent = value.indexOf('@') > 0 ? nameFromEmail(value) : 'Your name here';
     document.getElementById('cardId').textContent = 'CC-2026-0000';
     document.getElementById('cardCollege').textContent = 'CampusCode student';
+    var looksComplete = /^\S+@\S+\.\S+$/.test(value);
+    if (hint) {
+      hint.textContent = (looksComplete && haveAnyAccount())
+        ? 'No ID found for this email on this device. Use the email you registered with.'
+        : DEFAULT_HINT;
+    }
   }
 });
 
@@ -72,7 +91,7 @@ toggle.addEventListener('click', function () {
 // "Forgot password?" is not part of this demo, so we say so.
 document.getElementById('forgot').addEventListener('click', function (e) {
   e.preventDefault();
-  document.getElementById('hint').textContent = 'Password reset is not part of this demo.';
+  if (hint) hint.textContent = 'Password reset is not part of this demo.';
 });
 
 // The login itself.
@@ -88,14 +107,16 @@ form.addEventListener('submit', function (e) {
   busy = true;
   document.getElementById('loginBtn').textContent = 'Scanning...';
 
-  // Remember who is logged in. We never save the password.
-  var student = matchesStored(email) ? stored : {
+  // Use the registered ID for this email. Otherwise make a demo ID. We never save the password.
+  var student = findAccount(email) || {
     name: nameFromEmail(email),
     email: email,
     college: 'CampusCode student',
     id: 'CC-2026-' + (1000 + Math.floor(Math.random() * 9000))
   };
   try {
+    accounts[email.toLowerCase()] = student;
+    localStorage.setItem('cc_accounts', JSON.stringify(accounts));
     localStorage.setItem('cc_student', JSON.stringify(student));
     localStorage.setItem('cc_session', 'on');
   } catch (err) {}

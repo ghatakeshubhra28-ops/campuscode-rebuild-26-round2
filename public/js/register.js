@@ -90,7 +90,13 @@ document.getElementById('verify').addEventListener('click', function () {
     college: collegeIn.value.trim(),
     id: studentId
   };
-  try { localStorage.setItem('cc_student', JSON.stringify(student)); } catch (e) {}
+  try {
+    var accounts = {};
+    try { accounts = JSON.parse(localStorage.getItem('cc_accounts')) || {}; } catch (e) {}
+    accounts[student.email.toLowerCase()] = student;
+    localStorage.setItem('cc_accounts', JSON.stringify(accounts));
+    localStorage.setItem('cc_student', JSON.stringify(student));
+  } catch (e) {}
 
   // Press the stamp on the card.
   card.classList.add('issued');
