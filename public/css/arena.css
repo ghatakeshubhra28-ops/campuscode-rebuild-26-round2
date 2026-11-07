@@ -230,3 +230,8 @@ body { animation: pageFade .5s ease-out both; }
 
 /* Ticker pauses when you hover over it */
 .ticker:hover .ticker-track { animation-play-state: paused; }
+/* ---- Global polish ---- */
+::selection { background: var(--lime); color: var(--text); }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--purple); outline-offset: 2px; }
+.btn { transition: transform .15s var(--ease), background .2s var(--ease), border-color .2s var(--ease), color .2s var(--ease); }
+.btn:active { transform: scale(.97); }
