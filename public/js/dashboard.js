@@ -72,8 +72,8 @@
   ];
 
   const NOTES = [
-    { id: 'n1', title: 'Round 2 is live', text: 'Rebuild the 4 pages with an original design. Submit by 8:00 PM today.', when: 'Today' },
-    { id: 'n2', title: 'Your ID was issued', text: 'Your Student pass is ready in Digital Card.', when: 'Today' },
+    { id: 'n1', title: 'Round 2: Rebuild', text: 'Rebuild the 4 pages with an original design. Submit by Sat 7 Nov, 8:00 PM IST.', when: '7 Nov' },
+    { id: 'n2', title: 'Your ID was issued', text: 'Your Student pass is ready in Digital Card.', when: '4 Nov' },
     { id: 'n3', title: "You joined ReBuild '26", text: 'Use the same team name on every submission.', when: '5 Nov' },
     { id: 'n4', title: 'HackMate has suggestions', text: 'Six sample students match your interests.', when: '5 Nov' },
     { id: 'n5', title: 'Certificates are coming', text: 'Participation certificates are issued on 10 Nov.', when: '4 Nov' },
@@ -123,6 +123,44 @@
   const ASK = ['When is the deadline?', 'What is the AI code limit?', 'Which fonts and colours?', 'What do I submit?', 'How is Round 2 judged?'];
   let chat = [{ from: 'bot', text: "Hi, I am RuleBot. I answer questions about the ReBuild '26 rules and schedule. This is a demo: it matches keywords, it is not a live AI model." }];
 
+  // ---------- Deadlines (all times are IST, taken from the rulebook) ----------
+  const R2_DEADLINE = new Date('2026-11-07T20:00:00+05:30').getTime();
+  const r2Closed = () => Date.now() > R2_DEADLINE;
+  const dayEnd = (iso) => new Date(iso + 'T23:59:59+05:30').getTime();
+  let cdTimer = null;
+
+  function countdownBox() {
+    return '<div class="dx-cd" id="cd"><p class="label" id="cdLabel">Round 2 closes in</p>' +
+      '<div class="dx-cd-cells"><div><b id="cdD">00</b><small>Days</small></div><div><b id="cdH">00</b><small>Hours</small></div><div><b id="cdM">00</b><small>Min</small></div><div><b id="cdS">00</b><small>Sec</small></div></div>' +
+      '<p class="dx-cd-closed">Submissions closed</p><p class="dx-note" id="cdNote">Sat 7 Nov, 8:00 PM IST</p></div>';
+  }
+  function tick() {
+    const box = $('#cd');
+    if (!box) { clearInterval(cdTimer); return; }
+    const ms = R2_DEADLINE - Date.now();
+    if (ms <= 0) {
+      box.classList.add('closed'); box.classList.remove('urgent');
+      $('#cdLabel').textContent = 'Round 2';
+      $('#cdNote').textContent = 'Closed Sat 7 Nov, 8:00 PM IST';
+      clearInterval(cdTimer);
+      return;
+    }
+    const pad = (n) => String(n).padStart(2, '0');
+    const s = Math.floor(ms / 1000);
+    $('#cdD').textContent = pad(Math.floor(s / 86400));
+    $('#cdH').textContent = pad(Math.floor((s % 86400) / 3600));
+    $('#cdM').textContent = pad(Math.floor((s % 3600) / 60));
+    $('#cdS').textContent = pad(s % 60);
+    box.classList.toggle('urgent', ms < 3600000);
+  }
+  function startCountdown() {
+    clearInterval(cdTimer);
+    if ($('#cd')) { tick(); cdTimer = setInterval(tick, 1000); }
+  }
+  function deadlineRow(label, when, closed) {
+    return '<li><span>' + label + '</span><span class="when">' + (closed ? '<span class="dx-pill dark">DONE</span>' : when) + '</span></li>';
+  }
+
   // ---------- State ----------
   let current = 'overview';
   let evFilter = 'All';
@@ -169,7 +207,7 @@
     return head('Student workspace / Live', greeting() + ', <span class="mark">' + esc(firstName()) + '</span>.', 'Your ID, your journey, your events and your AI tools in one place.') +
       '<section class="card dx-hero"><div><p class="label">Build / Learn / Collaborate</p><h2>ReBuild \'26</h2>' +
       '<p>An individual dashboard-recreation hackathon by CampusCode. Recreate the platform on Friday and rebuild it with an original design on Saturday. Frontend only, mock data is fine.</p>' +
-      '<button class="btn" data-go="my-events" type="button">Open my events &rarr;</button></div></section>' +
+      '<button class="btn" data-go="my-events" type="button">Open my events &rarr;</button></div>' + countdownBox() + '</section>' +
       '<div class="dx-stats4">' +
       kpi('calendar-check', 'Registered', joined.length, 'Events joined') +
       kpi('zap', 'Ongoing', ongoing, 'Live right now') +
@@ -178,10 +216,10 @@
       '<div class="dx-grid-2">' +
       '<section class="card"><p class="label">Your journey</p><h2 class="dx-card-title">ReBuild \'26</h2>' + journeyHtml() + '</section>' +
       '<div><section class="card"><p class="label">Upcoming deadlines</p><h2 class="dx-card-title">What is next</h2><ul class="dx-list">' +
-      '<li><span>Round 2 submission</span><span class="when">Sat 7 Nov, 8 PM</span></li>' +
-      '<li><span>Interview shortlist</span><span class="when">Mon 9 Nov</span></li>' +
-      '<li><span>Certificates issued</span><span class="when">Tue 10 Nov</span></li>' +
-      '<li><span>Interviews continue</span><span class="when">Wed 11 Nov</span></li></ul></section>' +
+      deadlineRow('Round 2 submission', 'Sat 7 Nov, 8 PM', r2Closed()) +
+      deadlineRow('Interview shortlist', 'Mon 9 Nov', Date.now() > dayEnd('2026-11-09')) +
+      deadlineRow('Certificates issued', 'Tue 10 Nov', Date.now() > dayEnd('2026-11-10')) +
+      deadlineRow('Interviews continue', 'Wed 11 Nov', Date.now() > dayEnd('2026-11-11')) + '</ul></section>' +
       '<section class="card" style="margin-top:20px"><p class="label">Profile strength</p><h2 class="dx-card-title">' + strength + '% complete</h2>' +
       '<div class="dx-meter-bar"><i style="width:' + strength + '%"></i></div>' +
       '<p class="dx-note">Add your college and team name in Profile.</p>' +
@@ -191,8 +229,8 @@
       tool('lightbulb', 'IdeaCheck AI', 'Screen your idea for originality, feasibility and impact.', 'ideacheck') +
       tool('bot', 'RuleBot AI', 'Ask anything about the rules and schedule.', 'rulebot') + '</div>' +
       '<section class="card" style="margin-top:20px"><p class="label">Recent activity</p><h2 class="dx-card-title">Your timeline</h2><ul class="dx-list act">' +
-      '<li><span class="when">Today</span><span>Opened Round 2: Rebuild</span></li>' +
-      '<li><span class="when">Today</span><span>Student pass issued: ' + esc(student.id) + '</span></li>' +
+      '<li><span class="when">7 Nov</span><span>Opened Round 2: Rebuild</span></li>' +
+      '<li><span class="when">4 Nov</span><span>Student pass issued: ' + esc(student.id) + '</span></li>' +
       '<li><span class="when">5 Nov</span><span>Joined ReBuild \'26 as ' + esc(team) + '</span></li>' +
       '<li><span class="when">4 Nov</span><span>Created your CampusCode account</span></li></ul></section>';
   }
@@ -207,8 +245,9 @@
       '<li class="done"><span class="dot"></span><h3>ID issued</h3><p>Account created and email verified.</p></li>' +
       '<li class="done"><span class="dot"></span><h3>Joined ReBuild \'26</h3><p>Individual hackathon, frontend only.</p></li>' +
       '<li class="done"><span class="dot"></span><h3>Round 1: Recreate</h3><p>Four pages recreated and submitted.</p></li>' +
-      '<li class="active"><span class="dot"></span><h3>Round 2: Rebuild</h3><p>An original design in the CampusCode vibe. In progress.</p></li>' +
-      '<li><span class="dot"></span><h3>Round 3: Interview</h3><p>Shortlisted participants only.</p></li>' +
+      (r2Closed()
+        ? '<li class="done"><span class="dot"></span><h3>Round 2: Rebuild</h3><p>Submissions closed. Results come next.</p></li><li class="active"><span class="dot"></span><h3>Round 3: Interview</h3><p>Shortlisted participants only.</p></li>'
+        : '<li class="active"><span class="dot"></span><h3>Round 2: Rebuild</h3><p>An original design in the CampusCode vibe. In progress.</p></li><li><span class="dot"></span><h3>Round 3: Interview</h3><p>Shortlisted participants only.</p></li>') +
       '<li><span class="dot"></span><h3>Certificates</h3><p>Participation certificates are issued.</p></li></ol>';
   }
   function profileStrength() {
@@ -254,7 +293,7 @@
     let body = mine.map((ev) => {
       const isRebuild = ev.id === 'rebuild';
       const rounds = isRebuild
-        ? '<div class="dx-rounds"><div class="dx-round done"><b>Round 1: Recreate</b><small>Done</small></div><div class="dx-round live"><b>Round 2: Rebuild</b><small>Live until 8 PM</small></div><div class="dx-round"><b>Round 3: Interview</b><small>Shortlist only</small></div></div>'
+        ? '<div class="dx-rounds"><div class="dx-round done"><b>Round 1: Recreate</b><small>Done</small></div><div class="dx-round ' + (r2Closed() ? 'done' : 'live') + '"><b>Round 2: Rebuild</b><small>' + (r2Closed() ? 'Closed' : 'Live until 8 PM') + '</small></div><div class="dx-round"><b>Round 3: Interview</b><small>Shortlist only</small></div></div>'
         : '<p class="dx-note">Registered. The organisers will post the schedule here.</p>';
       return '<article class="card dx-me"><div class="dx-me-head"><span class="dx-ic">' + ev.init + '</span><div><p class="label">CampusCode presents</p><h3>' + esc(ev.name) + '</h3></div></div>' +
         '<div class="dx-me-meta"><span>Status: <b>Registered</b></span><span>Team: <b>' + (isRebuild ? esc(team) : 'Individual') + '</b></span><span>Dates: <b>' + ev.date + '</b></span></div>' + rounds +
@@ -466,16 +505,36 @@
     guide: viewGuide, official: viewOfficial, notifications: viewNotifications, help: viewHelp
   };
 
+  // Numbers on the stat cards count up when a page opens.
+  function countUp() {
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.querySelectorAll('.dx-kpi strong').forEach((el) => {
+      const end = Number(el.textContent);
+      if (!end) return;
+      const start = performance.now();
+      (function tick(now) {
+        const p = Math.min(1, (now - start) / 700);
+        el.textContent = Math.round(end * p);
+        if (p < 1) requestAnimationFrame(tick);
+      })(start);
+    });
+  }
+
   // ---------- Render and navigate ----------
   function render() {
     const view = $('#view');
-    view.innerHTML = (RENDER[current] || viewOverview)();
+    view.innerHTML = (RENDER[current] || viewOverview)() +
+      '<p class="dx-tagline">Build / Compete / Ship &middot; ReBuild \'26 &middot; Round 2</p>';
     view.classList.remove('enter');
     void view.offsetWidth;
     view.classList.add('enter');
     renderNav();
     renderChrome();
     drawIcons();
+    countUp();
+    startCountdown();
+    const cur = VIEWS.find((x) => x.id === current);
+    document.title = (cur ? cur.label : 'Dashboard') + ' | CampusCode';
     const msgs = $('#msgs');
     if (msgs) msgs.scrollTop = msgs.scrollHeight;
     window.scrollTo(0, 0);
